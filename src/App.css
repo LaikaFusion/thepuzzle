@@ -40,3 +40,15 @@
 .read-the-docs {
   color: #888;
 }
+
+.gameBoard {
+  display: grid;
+  grid-template-columns: repeat(9, 30px);
+  justify-content: center;
+  align-items: center;
+}
+
+.gameCell {
+  border: 1px solid black;
+  aspect-ratio: 1;
+}
