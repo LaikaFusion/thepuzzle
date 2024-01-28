@@ -13,6 +13,7 @@ function App() {
   const [gameBoard, setGameboard] = useState(initialGameBoard);
   const [currentSelectedDigit, setDigit] = useState(0);
   const [invalidBoard, setInvalidBoard] = useState(false);
+  const numberSelectors = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const noDupeNumbers = (row: Array<number>) => {
     const dupes: number[] = [];
@@ -147,7 +148,6 @@ function App() {
     });
     return isProblem;
   };
-
   const rowCheck = (board: Array<Array<number>>) => {
     const rotatedBoard: Array<Array<number>> = [];
     let isProblem = false;
@@ -186,6 +186,11 @@ function App() {
     }
   };
 
+  //for the selector button
+
+  const numberSelectViaButton = (num: number) => {
+    setDigit(num);
+  };
   //for updating the master game value, this is gonna get big
   const changeGameboardValue = (currentCords: currentCordsObj) => {
     if (currentSelectedDigit) {
@@ -207,7 +212,6 @@ function App() {
     }
   };
 
-  // const updateGrid = (numberToChange, cordnates) =>
   useEffect(() => {
     document.addEventListener("keydown", numberSelectViaKey, true);
 
@@ -218,8 +222,6 @@ function App() {
 
   return (
     <>
-      <div> {currentSelectedDigit}</div>
-
       <div className="gameBoard">
         {gameBoard.map((rowOfBoard: Array<number>, curCol) => {
           return (
@@ -244,7 +246,27 @@ function App() {
             </div>
           );
         })}
-        <div>{invalidBoard ? "Wrong" : "All Right"}</div>
+        <div>{invalidBoard ? "Dupe Somewhere" : "All Numbers Valid"}</div>
+      </div>
+
+      <div className="gameBoard">
+        {numberSelectors.map((num) => {
+          return (
+            <div
+              className={
+                num === currentSelectedDigit
+                  ? "gameCell cellSelector currentlySelected"
+                  : "gameCell cellSelector"
+              }
+              key={num}
+              onClick={() => {
+                numberSelectViaButton(num);
+              }}
+            >
+              {num}
+            </div>
+          );
+        })}
       </div>
     </>
   );
