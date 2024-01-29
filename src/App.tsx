@@ -122,6 +122,7 @@ function App() {
   const [gameBoard, setGameboard] = useState(initialGameBoard);
   const [currentSelectedDigit, setDigit] = useState(0);
   const [invalidBoard, setInvalidBoard] = useState(false);
+  const [winner, setWinner] = useState(false);
   const numberSelectors = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const noDupeNumbers = (row: Array<number>) => {
@@ -286,6 +287,14 @@ function App() {
     return false;
   };
 
+  const checkForWinner = (gameBoard: Array<Array<number>>) => {
+    const flattenedGameBoard: Array<number> = gameBoard.flat();
+    const flattenedSolution: Array<number> = puzzle.solution.flat();
+    return flattenedGameBoard.every((element: number, index: number) => {
+      return element === flattenedSolution[index];
+    });
+  };
+
   //for keyboard input
   const numberSelectViaKey = ({ key }: KeyboardEvent) => {
     const lastPress = Number(key);
@@ -299,6 +308,7 @@ function App() {
   const numberSelectViaButton = (num: number) => {
     setDigit(num);
   };
+
   //for updating the master game value, this is gonna get big
   const changeGameboardValue = (currentCords: currentCordsObj) => {
     if (currentSelectedDigit) {
@@ -315,6 +325,9 @@ function App() {
         setInvalidBoard(true);
       } else {
         setInvalidBoard(false);
+      }
+      if (checkForWinner(newGameBoard)) {
+        setWinner(true);
       }
       setGameboard(newGameBoard);
     }
@@ -351,6 +364,7 @@ function App() {
           });
         })}
         <div>{invalidBoard ? "Dupe Somewhere" : "All Numbers Valid"}</div>
+        <div>{winner ? "You solved it!" : ""}</div>
       </div>
 
       <div className="gameBoard">
