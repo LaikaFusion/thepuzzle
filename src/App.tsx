@@ -1,14 +1,123 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { element } from "prop-types";
 
 interface currentCordsObj {
   row: number;
   col: number;
 }
 
+interface clue {
+  number: number;
+  absolute: boolean;
+}
+
+interface puzzle {
+  solution: Array<Array<number>>;
+  verticalClues: Array<Array<clue>>;
+  horizontalClues: Array<Array<clue>>;
+}
+
+const puzzle: puzzle = {
+  solution: [
+    [9, 2, 6, 8, 4, 5, 7, 3, 1],
+    [5, 1, 8, 6, 3, 7, 2, 4, 9],
+    [7, 4, 3, 2, 9, 1, 8, 6, 5],
+    [8, 3, 4, 1, 2, 6, 9, 5, 7],
+    [6, 5, 1, 7, 8, 9, 4, 2, 3],
+    [2, 7, 9, 3, 5, 4, 6, 1, 8],
+    [3, 9, 2, 4, 1, 8, 5, 7, 6],
+    [4, 6, 5, 9, 7, 3, 1, 8, 2],
+    [1, 8, 7, 5, 6, 2, 3, 9, 4],
+  ],
+  verticalClues: [
+    [
+      { number: 9, absolute: true },
+      { number: 16, absolute: false },
+      { number: 4, absolute: true },
+      { number: 16, absolute: false },
+    ],
+    [
+      { number: 23, absolute: false },
+      { number: 7, absolute: true },
+      { number: 15, absolute: false },
+    ],
+    [
+      { number: 7, absolute: true },
+      { number: 18, absolute: false },
+      { number: 9, absolute: false },
+      { number: 11, absolute: false },
+    ],
+    [
+      { number: 16, absolute: false },
+      { number: 29, absolute: false },
+    ],
+    [
+      { number: 12, absolute: false },
+      { number: 24, absolute: false },
+      { number: 9, absolute: false },
+    ],
+    [
+      { number: 21, absolute: false },
+      { number: 24, absolute: false },
+    ],
+    [
+      { number: 12, absolute: false },
+      { number: 33, absolute: false },
+    ],
+    [{ number: 45, absolute: false }],
+    [
+      { number: 16, absolute: false },
+      { number: 5, absolute: true },
+      { number: 8, absolute: false },
+      { number: 12, absolute: false },
+      { number: 4, absolute: true },
+    ],
+  ],
+  horizontalClues: [
+    [{ number: 45, absolute: false }],
+    [
+      { number: 10, absolute: false },
+      { number: 21, absolute: false },
+      { number: 14, absolute: false },
+    ],
+    [
+      { number: 6, absolute: true },
+      { number: 8, absolute: true },
+      { number: 3, absolute: true },
+      { number: 28, absolute: false },
+    ],
+    [
+      { number: 27, absolute: false },
+      { number: 18, absolute: false },
+    ],
+    [
+      { number: 16, absolute: false },
+      { number: 10, absolute: false },
+      { number: 19, absolute: false },
+    ],
+    [
+      { number: 5, absolute: true },
+      { number: 7, absolute: true },
+      { number: 33, absolute: false },
+    ],
+    [
+      { number: 17, absolute: false },
+      { number: 19, absolute: false },
+      { number: 9, absolute: false },
+    ],
+    [
+      { number: 13, absolute: false },
+      { number: 5, absolute: true },
+      { number: 27, absolute: false },
+    ],
+    [
+      { number: 10, absolute: false },
+      { number: 35, absolute: false },
+    ],
+  ],
+};
+
 function App() {
-  // note the gameboard is an array of columns, not of rows
   const initialGameBoard = Array(9).fill(Array(9).fill(0));
   const [gameBoard, setGameboard] = useState(initialGameBoard);
   const [currentSelectedDigit, setDigit] = useState(0);
@@ -148,15 +257,15 @@ function App() {
     });
     return isProblem;
   };
-  const rowCheck = (board: Array<Array<number>>) => {
+  const colCheck = (board: Array<Array<number>>) => {
     const rotatedBoard: Array<Array<number>> = [];
     let isProblem = false;
     for (let index = 0; index < board.length; index++) {
-      const rowArray: Array<number> = [];
+      const colArray: Array<number> = [];
       board.forEach((column) => {
-        rowArray.push(column[index]);
+        colArray.push(column[index]);
       });
-      rotatedBoard.push(rowArray);
+      rotatedBoard.push(colArray);
     }
     rotatedBoard.forEach((element: Array<number>) => {
       const results = noDupeNumbers(element);
@@ -166,7 +275,7 @@ function App() {
     });
     return isProblem;
   };
-  const colCheck = (board: Array<Array<number>>) => {
+  const rowCheck = (board: Array<Array<number>>) => {
     board.forEach((element: Array<number>) => {
       const results = noDupeNumbers(element);
       if (results.length > 0) {
@@ -187,7 +296,6 @@ function App() {
   };
 
   //for the selector button
-
   const numberSelectViaButton = (num: number) => {
     setDigit(num);
   };
@@ -223,28 +331,24 @@ function App() {
   return (
     <>
       <div className="gameBoard">
-        {gameBoard.map((rowOfBoard: Array<number>, curCol) => {
-          return (
-            <div key={curCol}>
-              {rowOfBoard.map((numberToFill: number, curRow) => {
-                const currentCords = {
-                  row: curRow,
-                  col: curCol,
-                };
+        {gameBoard.map((rowOfBoard, curCol) => {
+          return rowOfBoard.map((numberToFill, curRow) => {
+            const currentCords = {
+              row: curRow,
+              col: curCol,
+            };
 
-                return (
-                  <div
-                    //there has to be a better way to do this.
-                    key={curRow + "" + curCol}
-                    className="gameCell"
-                    onClick={() => changeGameboardValue(currentCords)}
-                  >
-                    {numberToFill ? numberToFill : ""}
-                  </div>
-                );
-              })}
-            </div>
-          );
+            return (
+              <div
+                //there has to be a better way to do this.
+                key={curRow + "" + curCol}
+                className="gameCell"
+                onClick={() => changeGameboardValue(currentCords)}
+              >
+                {numberToFill ? numberToFill : ""}
+              </div>
+            );
+          });
         })}
         <div>{invalidBoard ? "Dupe Somewhere" : "All Numbers Valid"}</div>
       </div>
