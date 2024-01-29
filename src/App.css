@@ -70,6 +70,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding-top: 8px;
+  padding-bottom: 4px;
 }
 .verticalClues {
   display: flex;
@@ -86,6 +88,8 @@
   justify-content: flex-end;
   align-items: center;
   column-gap: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
 }
 .clueHolder {
   display: grid;
@@ -98,4 +102,8 @@
 }
 #warningMessage {
   margin: 8px;
+}
+
+.absoluteClue {
+  color: orange;
 }

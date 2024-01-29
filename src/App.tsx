@@ -350,18 +350,30 @@ function App() {
             return (
               <div className="horizontalClueHolder">
                 {clueSet.map((clue) => {
-                  return <div className="clue">{clue.number}</div>;
+                  return (
+                    <div
+                      className={clue.absolute ? "absoluteClue clue" : "clue"}
+                    >
+                      {clue.number}
+                    </div>
+                  );
                 })}
               </div>
             );
           })}
         </div>
         <div className="verticalClues">
-          {puzzle.horizontalClues.map((clueSet) => {
+          {puzzle.verticalClues.map((clueSet) => {
             return (
               <div className="verticalClueHolder">
                 {clueSet.map((clue) => {
-                  return <div className="clue">{clue.number}</div>;
+                  return (
+                    <div
+                      className={clue.absolute ? "absoluteClue clue" : "clue"}
+                    >
+                      {clue.number}
+                    </div>
+                  );
                 })}
               </div>
             );
