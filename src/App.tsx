@@ -332,7 +332,7 @@ function App() {
     <>
       <div className="gameBoard">
         {gameBoard.map((rowOfBoard, curCol) => {
-          return rowOfBoard.map((numberToFill, curRow) => {
+          return rowOfBoard.map((numberToFill: number, curRow: number) => {
             const currentCords = {
               row: curRow,
               col: curCol,
