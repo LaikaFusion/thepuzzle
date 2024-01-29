@@ -57,3 +57,45 @@
   background-color: black;
   color: white;
 }
+.horizontalClues {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+}
+.horizontalClueHolder {
+  width: 30px;
+  border: 1px solid black;
+  font-size: small;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.verticalClues {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+.verticalClueHolder {
+  height: 30px;
+  border: 1px solid black;
+  font-size: small;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 8px;
+}
+.clueHolder {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  justify-items: end;
+}
+.cellSelector {
+  margin-top: 8px;
+}
+#warningMessage {
+  margin: 8px;
+}

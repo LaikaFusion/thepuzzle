@@ -343,48 +343,76 @@ function App() {
 
   return (
     <>
-      <div className="gameBoard">
-        {gameBoard.map((rowOfBoard, curCol) => {
-          return rowOfBoard.map((numberToFill: number, curRow: number) => {
-            const currentCords = {
-              row: curRow,
-              col: curCol,
-            };
-
+      <div className="clueHolder">
+        <div className="spacer"></div>
+        <div className="horizontalClues">
+          {puzzle.horizontalClues.map((clueSet) => {
             return (
-              <div
-                //there has to be a better way to do this.
-                key={curRow + "" + curCol}
-                className="gameCell"
-                onClick={() => changeGameboardValue(currentCords)}
-              >
-                {numberToFill ? numberToFill : ""}
+              <div className="horizontalClueHolder">
+                {clueSet.map((clue) => {
+                  return <div className="clue">{clue.number}</div>;
+                })}
               </div>
             );
-          });
-        })}
-        <div>{invalidBoard ? "Dupe Somewhere" : "All Numbers Valid"}</div>
-        <div>{winner ? "You solved it!" : ""}</div>
-      </div>
+          })}
+        </div>
+        <div className="verticalClues">
+          {puzzle.horizontalClues.map((clueSet) => {
+            return (
+              <div className="verticalClueHolder">
+                {clueSet.map((clue) => {
+                  return <div className="clue">{clue.number}</div>;
+                })}
+              </div>
+            );
+          })}
+        </div>
+        <div className="gameBoard">
+          {gameBoard.map((rowOfBoard, curCol) => {
+            return rowOfBoard.map((numberToFill: number, curRow: number) => {
+              const currentCords = {
+                row: curRow,
+                col: curCol,
+              };
 
-      <div className="gameBoard">
-        {numberSelectors.map((num) => {
-          return (
-            <div
-              className={
-                num === currentSelectedDigit
-                  ? "gameCell cellSelector currentlySelected"
-                  : "gameCell cellSelector"
-              }
-              key={num}
-              onClick={() => {
-                numberSelectViaButton(num);
-              }}
-            >
-              {num}
-            </div>
-          );
-        })}
+              return (
+                <div
+                  //there has to be a better way to do this.
+                  key={curRow + "" + curCol}
+                  className="gameCell"
+                  onClick={() => changeGameboardValue(currentCords)}
+                >
+                  {numberToFill ? numberToFill : ""}
+                </div>
+              );
+            });
+          })}
+        </div>
+
+        <div id="warningMessage">
+          {invalidBoard ? "Dupe Somewhere     " : "All Numbers Valid       "}
+        </div>
+
+        <div className="gameBoard ">
+          {numberSelectors.map((num) => {
+            return (
+              <div
+                className={
+                  num === currentSelectedDigit
+                    ? "gameCell cellSelector currentlySelected"
+                    : "gameCell cellSelector"
+                }
+                key={num}
+                onClick={() => {
+                  numberSelectViaButton(num);
+                }}
+              >
+                {num}
+              </div>
+            );
+          })}
+        </div>
+        <div>{winner ? "You solved it!" : ""}</div>
       </div>
     </>
   );
