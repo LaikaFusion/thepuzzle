@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { CurrentCordsObj, Puzzle } from "./interfaces";
 import HorizontalClueHolder from "./puzzlepieces/horizontalClueHolder";
-import VerticalClueHolder from "./puzzlepieces/VerticalClueHolder";
+import VerticalClueHolder from "./puzzlepieces/ClueHolder";
 import GameBoard from "./puzzlepieces/GameBoard";
 import NumberSelector from "./puzzlepieces/NumberSelector";
+import ClueHolder from "./puzzlepieces/ClueHolder";
 
 const puzzleSample: Puzzle = {
   solution: [
@@ -334,8 +335,8 @@ function App() {
       <div className="clueHolder">
         <div className="spacer"></div>
         {/* TODO Merge these into one type with a flag to switch */}
-        <HorizontalClueHolder puzzleHolder={puzzleSample} />
-        <VerticalClueHolder puzzleHolder={puzzleSample} />
+        <ClueHolder puzzleHolder={puzzleSample} horizontal />
+        <ClueHolder puzzleHolder={puzzleSample} />
         <GameBoard
           currentGameBoard={gameBoard}
           changeGameboardValue={changeGameboardValue}
