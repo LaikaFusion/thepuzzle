@@ -1,23 +1,12 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import { CurrentCordsObj, Puzzle } from "./interfaces";
+import HorizontalClueHolder from "./puzzlepieces/horizontalClueHolder";
+import VerticalClueHolder from "./puzzlepieces/VerticalClueHolder";
+import GameBoard from "./puzzlepieces/GameBoard";
+import NumberSelector from "./puzzlepieces/NumberSelector";
 
-interface currentCordsObj {
-  row: number;
-  col: number;
-}
-
-interface clue {
-  number: number;
-  absolute: boolean;
-}
-
-interface puzzle {
-  solution: number[][];
-  verticalClues: clue[][];
-  horizontalClues: clue[][];
-}
-
-const puzzle: puzzle = {
+const puzzleSample: Puzzle = {
   solution: [
     [9, 2, 6, 8, 4, 5, 7, 3, 1],
     [5, 1, 8, 6, 3, 7, 2, 4, 9],
@@ -123,7 +112,6 @@ function App() {
   const [currentSelectedDigit, setDigit] = useState(0);
   const [invalidBoard, setInvalidBoard] = useState(false);
   const [winner, setWinner] = useState(false);
-  const numberSelectors = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const noDupeNumbers = (row: number[]) => {
     const dupes: number[] = [];
@@ -277,19 +265,19 @@ function App() {
     return isProblem;
   };
   const rowCheck = (board: number[][]) => {
+    let isProblem = false;
     board.forEach((element: number[]) => {
       const results = noDupeNumbers(element);
       if (results.length > 0) {
-        console.log("bad column");
-        return true;
+        isProblem = true;
       }
     });
-    return false;
+    return isProblem;
   };
 
   const checkForWinner = (gameBoard: number[][]) => {
     const flattenedGameBoard: number[] = gameBoard.flat();
-    const flattenedSolution: number[] = puzzle.solution.flat();
+    const flattenedSolution: number[] = puzzleSample.solution.flat();
     return flattenedGameBoard.every((element: number, index: number) => {
       return element === flattenedSolution[index];
     });
@@ -310,7 +298,7 @@ function App() {
   };
 
   //for updating the master game value, this is gonna get big
-  const changeGameboardValue = (currentCords: currentCordsObj) => {
+  const changeGameboardValue = (currentCords: CurrentCordsObj) => {
     if (currentSelectedDigit) {
       const newGameBoard = [...gameBoard];
       const changedCol = [...newGameBoard[currentCords.col]];
@@ -345,85 +333,22 @@ function App() {
     <>
       <div className="clueHolder">
         <div className="spacer"></div>
-        <div className="horizontalClues">
-          {puzzle.horizontalClues.map((clueSet) => {
-            return (
-              <div className="horizontalClueHolder">
-                {clueSet.map((clue) => {
-                  return (
-                    <div
-                      className={clue.absolute ? "absoluteClue clue" : "clue"}
-                    >
-                      {clue.number}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-        <div className="verticalClues">
-          {puzzle.verticalClues.map((clueSet) => {
-            return (
-              <div className="verticalClueHolder">
-                {clueSet.map((clue) => {
-                  return (
-                    <div
-                      className={clue.absolute ? "absoluteClue clue" : "clue"}
-                    >
-                      {clue.number}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-        <div className="gameBoard">
-          {gameBoard.map((rowOfBoard, curCol) => {
-            return rowOfBoard.map((numberToFill: number, curRow: number) => {
-              const currentCords = {
-                row: curRow,
-                col: curCol,
-              };
-
-              return (
-                <div
-                  //there has to be a better way to do this.
-                  key={curRow + "" + curCol}
-                  className="gameCell"
-                  onClick={() => changeGameboardValue(currentCords)}
-                >
-                  {numberToFill ? numberToFill : ""}
-                </div>
-              );
-            });
-          })}
-        </div>
+        {/* TODO Merge these into one type with a flag to switch */}
+        <HorizontalClueHolder puzzleHolder={puzzleSample} />
+        <VerticalClueHolder puzzleHolder={puzzleSample} />
+        <GameBoard
+          currentGameBoard={gameBoard}
+          changeGameboardValue={changeGameboardValue}
+        />
 
         <div id="warningMessage">
           {invalidBoard ? "Dupe Somewhere     " : "All Numbers Valid       "}
         </div>
 
-        <div className="gameBoard ">
-          {numberSelectors.map((num) => {
-            return (
-              <div
-                className={
-                  num === currentSelectedDigit
-                    ? "gameCell cellSelector currentlySelected"
-                    : "gameCell cellSelector"
-                }
-                key={num}
-                onClick={() => {
-                  numberSelectViaButton(num);
-                }}
-              >
-                {num}
-              </div>
-            );
-          })}
-        </div>
+        <NumberSelector
+          currentSelectedDigit={currentSelectedDigit}
+          numberSelectViaButton={numberSelectViaButton}
+        />
         <div>{winner ? "You solved it!" : ""}</div>
       </div>
     </>
