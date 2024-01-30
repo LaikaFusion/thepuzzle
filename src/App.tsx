@@ -12,9 +12,9 @@ interface clue {
 }
 
 interface puzzle {
-  solution: Array<Array<number>>;
-  verticalClues: Array<Array<clue>>;
-  horizontalClues: Array<Array<clue>>;
+  solution: number[][];
+  verticalClues: clue[][];
+  horizontalClues: clue[][];
 }
 
 const puzzle: puzzle = {
@@ -125,7 +125,7 @@ function App() {
   const [winner, setWinner] = useState(false);
   const numberSelectors = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  const noDupeNumbers = (row: Array<number>) => {
+  const noDupeNumbers = (row: number[]) => {
     const dupes: number[] = [];
 
     row.forEach((element: number, index: number) => {
@@ -137,7 +137,7 @@ function App() {
     return [...new Set(dupes)];
   };
 
-  const boxCheck = (board: Array<Array<number>>) => {
+  const boxCheck = (board: number[][]) => {
     //it was late and I didn't feel like debugging nested loops
     const rowOne = [
       board[0][0],
@@ -250,7 +250,7 @@ function App() {
       rowNine,
     ];
     let isProblem = false;
-    boxedBoard.forEach((element: Array<number>) => {
+    boxedBoard.forEach((element: number[]) => {
       const results = noDupeNumbers(element);
       if (results.length > 0) {
         isProblem = true;
@@ -258,17 +258,17 @@ function App() {
     });
     return isProblem;
   };
-  const colCheck = (board: Array<Array<number>>) => {
-    const rotatedBoard: Array<Array<number>> = [];
+  const colCheck = (board: number[][]) => {
+    const rotatedBoard: number[][] = [];
     let isProblem = false;
     for (let index = 0; index < board.length; index++) {
-      const colArray: Array<number> = [];
+      const colArray: number[] = [];
       board.forEach((column) => {
         colArray.push(column[index]);
       });
       rotatedBoard.push(colArray);
     }
-    rotatedBoard.forEach((element: Array<number>) => {
+    rotatedBoard.forEach((element: number[]) => {
       const results = noDupeNumbers(element);
       if (results.length > 0) {
         isProblem = true;
@@ -276,8 +276,8 @@ function App() {
     });
     return isProblem;
   };
-  const rowCheck = (board: Array<Array<number>>) => {
-    board.forEach((element: Array<number>) => {
+  const rowCheck = (board: number[][]) => {
+    board.forEach((element: number[]) => {
       const results = noDupeNumbers(element);
       if (results.length > 0) {
         console.log("bad column");
@@ -287,9 +287,9 @@ function App() {
     return false;
   };
 
-  const checkForWinner = (gameBoard: Array<Array<number>>) => {
-    const flattenedGameBoard: Array<number> = gameBoard.flat();
-    const flattenedSolution: Array<number> = puzzle.solution.flat();
+  const checkForWinner = (gameBoard: number[][]) => {
+    const flattenedGameBoard: number[] = gameBoard.flat();
+    const flattenedSolution: number[] = puzzle.solution.flat();
     return flattenedGameBoard.every((element: number, index: number) => {
       return element === flattenedSolution[index];
     });
