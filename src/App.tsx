@@ -334,7 +334,6 @@ function App() {
     <>
       <div className="clueHolder">
         <div className="spacer"></div>
-        {/* TODO Merge these into one type with a flag to switch */}
         <ClueHolder puzzleHolder={puzzleSample} horizontal />
         <ClueHolder puzzleHolder={puzzleSample} />
         <GameBoard
