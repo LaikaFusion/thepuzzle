@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { CurrentCordsObj, Puzzle } from "./interfaces";
-import HorizontalClueHolder from "./puzzlepieces/horizontalClueHolder";
-import VerticalClueHolder from "./puzzlepieces/ClueHolder";
 import GameBoard from "./puzzlepieces/GameBoard";
 import NumberSelector from "./puzzlepieces/NumberSelector";
 import ClueHolder from "./puzzlepieces/ClueHolder";
@@ -332,24 +330,33 @@ function App() {
 
   return (
     <>
-      <div className="clueHolder">
-        <div className="spacer"></div>
-        <ClueHolder puzzleHolder={puzzleSample} horizontal />
-        <ClueHolder puzzleHolder={puzzleSample} />
-        <GameBoard
-          currentGameBoard={gameBoard}
-          changeGameboardValue={changeGameboardValue}
-        />
+      <div className="gameArea">
+        <div className="fullGameHolder">
+          <div className="alertsHolder">
+            <div id="alertBar">
+              Mistake{" "}
+              <div id={invalidBoard ? "alertLightActive" : "alertLight"} />
+            </div>
+            <div id="alertBar">
+              Winner <div id={winner ? "alertLightActive" : "alertLight"} />
+            </div>
+            {winner ? "You solved it!" : ""}
+          </div>
+          <ClueHolder puzzleHolder={puzzleSample} horizontal />
+          <ClueHolder puzzleHolder={puzzleSample} />
+          <div className="gameTray underEffect">
+            <GameBoard
+              currentGameBoard={gameBoard}
+              changeGameboardValue={changeGameboardValue}
+            />
+          </div>
+          <div id="spacer" />
 
-        <div id="warningMessage">
-          {invalidBoard ? "Dupe Somewhere     " : "All Numbers Valid       "}
+          <NumberSelector
+            currentSelectedDigit={currentSelectedDigit}
+            numberSelectViaButton={numberSelectViaButton}
+          />
         </div>
-
-        <NumberSelector
-          currentSelectedDigit={currentSelectedDigit}
-          numberSelectViaButton={numberSelectViaButton}
-        />
-        <div>{winner ? "You solved it!" : ""}</div>
       </div>
     </>
   );

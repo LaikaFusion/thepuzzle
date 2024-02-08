@@ -7,14 +7,14 @@ export default function NumberSelector({
 }) {
   const numberSelectors = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   return (
-    <div className="gameBoard ">
+    <div className="horizontalClues">
       {numberSelectors.map((num) => {
         return (
           <div
             className={
               num === currentSelectedDigit
-                ? "gameCell cellSelector currentlySelected"
-                : "gameCell cellSelector"
+                ? "currentlySelected numSelection "
+                : " numSelection"
             }
             key={num}
             onClick={() => {

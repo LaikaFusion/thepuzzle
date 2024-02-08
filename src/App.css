@@ -1,109 +1,191 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+.gameTray {
+  border-radius: 1rem;
+  width: 100%;
   padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  box-sizing: border-box;
 }
 
 .gameBoard {
   display: grid;
-  grid-template-columns: repeat(9, 30px);
+  grid-template-columns: repeat(9, 1fr);
   justify-content: center;
   align-items: center;
+}
+
+.underEffect {
+  /* box-shadow: 0px 2px 0.5rem 0 rgba(0, 0, 0, 0.9) inset; */
+  box-shadow: inset 8px 8px 16px #bebebe, inset -8px -8px 16px #ffffff;
 }
 
 .gameCell {
   border: 1px solid black;
   aspect-ratio: 1;
+  box-sizing: border-box;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+}
+.gameCell:nth-child(3n):not(:nth-child(9n)) {
+  border-right: 2px solid black;
+}
+.gameCell:nth-child(n + 19):nth-child(-n + 27),
+.gameCell:nth-child(n + 46):nth-child(-n + 54),
+.gameCell:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 2px solid black;
+}
+
+.gameCell:first-child {
+  border-top-left-radius: 1rem;
+}
+.gameCell:nth-child(9) {
+  border-top-right-radius: 1rem;
+}
+
+.gameCell:nth-last-child(9) {
+  border-bottom-left-radius: 1rem;
+}
+.gameCell:nth-last-child(1) {
+  border-bottom-right-radius: 1rem;
 }
 
 .currentlySelected {
-  background-color: black;
-  color: white;
+  box-shadow: inset 2px 2px 4px #bebebe, inset -2px -2px 4px #ffffff !important;
 }
 .horizontalClues {
   display: flex;
   align-items: stretch;
   flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0.5rem 2rem 0 2rem;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
 }
 .horizontalClueHolder {
-  width: 30px;
-  border: 1px solid black;
-  font-size: small;
+  font-size: medium;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding-top: 8px;
   padding-bottom: 4px;
+  align-items: center;
+  box-shadow: 2px 2px 4px #bebebe, -2px -2px 6px #ffffff;
+  border-radius: 0.5rem;
+  margin: 0.15rem 0.15rem 0.15rem 0.15rem;
+  width: 100%;
 }
 .verticalClues {
   display: flex;
   align-items: stretch;
   flex-direction: column;
+  padding: 2rem 0rem;
+  width: 100%;
 }
 .verticalClueHolder {
-  height: 30px;
-  border: 1px solid black;
-  font-size: small;
+  box-shadow: 2px 2px 4px #bebebe, -2px -2px 6px #ffffff;
+  border-radius: 0.5rem;
+  height: 100%;
+  font-size: medium;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  column-gap: 8px;
   padding-right: 8px;
   padding-left: 8px;
+  margin: 0.15rem 0 0.15rem;
+  width: 100%;
 }
-.clueHolder {
+.fullGameHolder {
   display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto auto;
-  justify-items: end;
+  grid-template-columns: 20% auto;
+  grid-template-rows: 18% auto 10%;
+  justify-items: center;
+  align-content: center;
+  max-width: 800px;
+  min-width: 600px;
+  grid-gap: 1rem;
 }
-.cellSelector {
-  margin-top: 8px;
-}
+
 #warningMessage {
   margin: 8px;
 }
 
 .absoluteClue {
   color: orange;
+}
+.gameArea {
+  margin: 0 10vw;
+  background-color: #e5e5e5;
+  color: black;
+  width: 80vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  flex-direction: column;
+}
+
+.clue {
+  margin: 0 0.2rem;
+}
+#alertBar {
+  box-shadow: 2px 2px 4px #bebebe, -2px -2px 6px #ffffff;
+  border-radius: 0.5rem;
+  width: 100%;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0.4rem 0 0;
+  margin: 0.15rem;
+  height: 2.3rem;
+  box-sizing: border-box;
+}
+.alertsHolder {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+#alertLight {
+  width: 1em;
+  height: 1em;
+  background-color: rgb(246, 212, 150);
+  border-radius: 1em;
+  margin-left: 0.5em;
+  border-radius: 0.25em;
+  box-shadow: inset 2px 2px 2px rgba(190, 190, 190, 0.75),
+    inset -2px -2px 2px rgba(255, 255, 255, 0.75);
+}
+#alertLightActive {
+  width: 1em;
+  height: 1em;
+  background-color: orange;
+  border-radius: 0.25em;
+  margin-left: 0.5em;
+  box-shadow: 2px 2px 4px #bebebe, -2px -2px 4px #ffffff;
+}
+
+.numSelectorBar {
+  display: flex;
+  width: 100%;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.numSelection {
+  border-radius: 0.5em;
+  box-shadow: 2px 2px 4px #bebebe, -2px -2px 4px #ffffff;
+  width: 3rem;
+  height: 2rem;
+  text-align: center;
+  padding: 0.5rem 0 0 0;
+  margin: 0.15rem;
 }
