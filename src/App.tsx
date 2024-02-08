@@ -308,6 +308,7 @@ function App() {
       newGameBoard[currentCords.col] = changedCol;
       console.log(JSON.stringify(newGameBoard));
       localStorage.setItem("gameBoard", JSON.stringify(newGameBoard));
+      // TODO: Extract this into a seperate function
       if (
         colCheck(newGameBoard) ||
         rowCheck(newGameBoard) ||
@@ -337,6 +338,8 @@ function App() {
     if (potentialBoard) {
       const convertedBoard = JSON.parse(potentialBoard);
       setGameboard(convertedBoard);
+      // TODO: Extract this into a seperate function
+
       if (
         colCheck(convertedBoard) ||
         rowCheck(convertedBoard) ||
