@@ -306,7 +306,6 @@ function App() {
           ? 0
           : currentSelectedDigit;
       newGameBoard[currentCords.col] = changedCol;
-      console.log(JSON.stringify(newGameBoard));
       localStorage.setItem("gameBoard", JSON.stringify(newGameBoard));
       // TODO: Extract this into a seperate function
       if (
