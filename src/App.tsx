@@ -301,9 +301,13 @@ function App() {
     if (currentSelectedDigit) {
       const newGameBoard = [...gameBoard];
       const changedCol = [...newGameBoard[currentCords.col]];
-      changedCol[currentCords.row] = currentSelectedDigit;
+      changedCol[currentCords.row] =
+        changedCol[currentCords.row] === currentSelectedDigit
+          ? 0
+          : currentSelectedDigit;
       newGameBoard[currentCords.col] = changedCol;
-
+      console.log(JSON.stringify(newGameBoard));
+      localStorage.setItem("gameBoard", JSON.stringify(newGameBoard));
       if (
         colCheck(newGameBoard) ||
         rowCheck(newGameBoard) ||
@@ -327,6 +331,23 @@ function App() {
       document.removeEventListener("keydown", numberSelectViaKey, true);
     };
   }, [currentSelectedDigit]);
+
+  useEffect(() => {
+    const potentialBoard = localStorage.getItem("gameBoard");
+    if (potentialBoard) {
+      const convertedBoard = JSON.parse(potentialBoard);
+      setGameboard(convertedBoard);
+      if (
+        colCheck(convertedBoard) ||
+        rowCheck(convertedBoard) ||
+        boxCheck(convertedBoard)
+      ) {
+        setInvalidBoard(true);
+      } else {
+        setInvalidBoard(false);
+      }
+    }
+  }, []);
 
   return (
     <>
