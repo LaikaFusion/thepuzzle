@@ -7,6 +7,12 @@ import ClueHolder from "./puzzlepieces/ClueHolder";
 import puzzles from "./puzzles.json";
 
 function App() {
+  const changePuzzle = () => {
+    const pickedPuzzle: Puzzle =
+      puzzles[Math.floor(Math.random() * puzzles.length)];
+    localStorage.setItem("curPuzzle", JSON.stringify(pickedPuzzle));
+    return;
+  };
   const currentPuzzle = (): Puzzle => {
     if (localStorage.getItem("curPuzzle") == null) {
       changePuzzle();
@@ -62,13 +68,6 @@ function App() {
   const [winner, setWinner] = useState(false);
   const [curPuzzle, setCurPuzzle] = useState(currentPuzzle());
 
-  const changePuzzle = () => {
-    const pickedPuzzle: Puzzle =
-      puzzles[Math.floor(Math.random() * puzzles.length)];
-    localStorage.setItem("curPuzzle", JSON.stringify(pickedPuzzle));
-    setCurPuzzle(pickedPuzzle);
-    return;
-  };
   const noDupeNumbers = (row: number[]) => {
     const dupes: number[] = [];
 
