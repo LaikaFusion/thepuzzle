@@ -4,106 +4,7 @@ import { CurrentCordsObj, Puzzle } from "./interfaces";
 import GameBoard from "./puzzlepieces/GameBoard";
 import NumberSelector from "./puzzlepieces/NumberSelector";
 import ClueHolder from "./puzzlepieces/ClueHolder";
-
-const puzzleSample: Puzzle = {
-  solution: [
-    [9, 2, 6, 8, 4, 5, 7, 3, 1],
-    [5, 1, 8, 6, 3, 7, 2, 4, 9],
-    [7, 4, 3, 2, 9, 1, 8, 6, 5],
-    [8, 3, 4, 1, 2, 6, 9, 5, 7],
-    [6, 5, 1, 7, 8, 9, 4, 2, 3],
-    [2, 7, 9, 3, 5, 4, 6, 1, 8],
-    [3, 9, 2, 4, 1, 8, 5, 7, 6],
-    [4, 6, 5, 9, 7, 3, 1, 8, 2],
-    [1, 8, 7, 5, 6, 2, 3, 9, 4],
-  ],
-  verticalClues: [
-    [
-      { number: 9, absolute: true },
-      { number: 16, absolute: false },
-      { number: 4, absolute: true },
-      { number: 16, absolute: false },
-    ],
-    [
-      { number: 23, absolute: false },
-      { number: 7, absolute: true },
-      { number: 15, absolute: false },
-    ],
-    [
-      { number: 7, absolute: true },
-      { number: 18, absolute: false },
-      { number: 9, absolute: false },
-      { number: 11, absolute: false },
-    ],
-    [
-      { number: 16, absolute: false },
-      { number: 29, absolute: false },
-    ],
-    [
-      { number: 12, absolute: false },
-      { number: 24, absolute: false },
-      { number: 9, absolute: false },
-    ],
-    [
-      { number: 21, absolute: false },
-      { number: 24, absolute: false },
-    ],
-    [
-      { number: 12, absolute: false },
-      { number: 33, absolute: false },
-    ],
-    [{ number: 45, absolute: false }],
-    [
-      { number: 16, absolute: false },
-      { number: 5, absolute: true },
-      { number: 8, absolute: false },
-      { number: 12, absolute: false },
-      { number: 4, absolute: true },
-    ],
-  ],
-  horizontalClues: [
-    [{ number: 45, absolute: false }],
-    [
-      { number: 10, absolute: false },
-      { number: 21, absolute: false },
-      { number: 14, absolute: false },
-    ],
-    [
-      { number: 6, absolute: true },
-      { number: 8, absolute: true },
-      { number: 3, absolute: true },
-      { number: 28, absolute: false },
-    ],
-    [
-      { number: 27, absolute: false },
-      { number: 18, absolute: false },
-    ],
-    [
-      { number: 16, absolute: false },
-      { number: 10, absolute: false },
-      { number: 19, absolute: false },
-    ],
-    [
-      { number: 5, absolute: true },
-      { number: 7, absolute: true },
-      { number: 33, absolute: false },
-    ],
-    [
-      { number: 17, absolute: false },
-      { number: 19, absolute: false },
-      { number: 9, absolute: false },
-    ],
-    [
-      { number: 13, absolute: false },
-      { number: 5, absolute: true },
-      { number: 27, absolute: false },
-    ],
-    [
-      { number: 10, absolute: false },
-      { number: 35, absolute: false },
-    ],
-  ],
-};
+import puzzles from "./puzzles.json";
 
 function App() {
   const initialGameBoard = Array(9).fill(Array(9).fill(0));
@@ -112,6 +13,25 @@ function App() {
   const [invalidBoard, setInvalidBoard] = useState(false);
   const [winner, setWinner] = useState(false);
 
+  const currentPuzzle = () => {
+    if (localStorage.getItem("curPuzzle") == null) {
+      changePuzzle();
+    }
+    const puzzle = localStorage.getItem("curPuzzle");
+    if (puzzle) {
+      return JSON.parse(puzzle);
+    }
+    console.error("No puzzle");
+  };
+
+  const changePuzzle = () => {
+    localStorage.setItem(
+      "curPuzzle",
+      JSON.stringify(puzzles[Math.floor(Math.random() * puzzles.length)])
+    );
+
+    return;
+  };
   const noDupeNumbers = (row: number[]) => {
     const dupes: number[] = [];
 
@@ -365,8 +285,8 @@ function App() {
             </div>
             {winner ? "You solved it!" : ""}
           </div>
-          <ClueHolder puzzleHolder={puzzleSample} horizontal />
-          <ClueHolder puzzleHolder={puzzleSample} />
+          <ClueHolder puzzleHolder={currentPuzzle()} horizontal />
+          <ClueHolder puzzleHolder={currentPuzzle()} />
           <div className="gameTray underEffect">
             <GameBoard
               currentGameBoard={gameBoard}
