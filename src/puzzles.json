@@ -98,41 +98,5 @@
         { "number": 35, "absolute": false }
       ]
     ]
-  },
-  {
-    "puzzleId": 0,
-    "solution": [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    "verticalClues": [
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }]
-    ],
-    "horizontalClues": [
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }],
-      [{ "number": 0, "absolute": true }]
-    ]
   }
 ]
