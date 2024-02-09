@@ -7,13 +7,7 @@ import ClueHolder from "./puzzlepieces/ClueHolder";
 import puzzles from "./puzzles.json";
 
 function App() {
-  const initialGameBoard = Array(9).fill(Array(9).fill(0));
-  const [gameBoard, setGameboard] = useState(initialGameBoard);
-  const [currentSelectedDigit, setDigit] = useState(0);
-  const [invalidBoard, setInvalidBoard] = useState(false);
-  const [winner, setWinner] = useState(false);
-
-  const currentPuzzle = () => {
+  const currentPuzzle = (): Puzzle => {
     if (localStorage.getItem("curPuzzle") == null) {
       changePuzzle();
     }
@@ -22,14 +16,57 @@ function App() {
       return JSON.parse(puzzle);
     }
     console.error("No puzzle");
+
+    return {
+      puzzleId: 0,
+      solution: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      ],
+      verticalClues: [
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+      ],
+      horizontalClues: [
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+        [{ number: 0, absolute: true }],
+      ],
+    };
   };
 
-  const changePuzzle = () => {
-    localStorage.setItem(
-      "curPuzzle",
-      JSON.stringify(puzzles[Math.floor(Math.random() * puzzles.length)])
-    );
+  const initialGameBoard = Array(9).fill(Array(9).fill(0));
+  const [gameBoard, setGameboard] = useState(initialGameBoard);
+  const [currentSelectedDigit, setDigit] = useState(0);
+  const [invalidBoard, setInvalidBoard] = useState(false);
+  const [winner, setWinner] = useState(false);
+  const [curPuzzle, setCurPuzzle] = useState(currentPuzzle());
 
+  const changePuzzle = () => {
+    const pickedPuzzle: Puzzle =
+      puzzles[Math.floor(Math.random() * puzzles.length)];
+    localStorage.setItem("curPuzzle", JSON.stringify(pickedPuzzle));
+    setCurPuzzle(pickedPuzzle);
     return;
   };
   const noDupeNumbers = (row: number[]) => {
@@ -196,7 +233,8 @@ function App() {
 
   const checkForWinner = (gameBoard: number[][]) => {
     const flattenedGameBoard: number[] = gameBoard.flat();
-    const flattenedSolution: number[] = puzzleSample.solution.flat();
+    const flattenedSolutionResult = curPuzzle;
+    const flattenedSolution: number[] = flattenedSolutionResult.solution.flat();
     return flattenedGameBoard.every((element: number, index: number) => {
       return element === flattenedSolution[index];
     });
@@ -276,6 +314,10 @@ function App() {
       <div className="gameArea">
         <div className="fullGameHolder">
           <div className="alertsHolder">
+            <div id="alertBar" onClick={changePuzzle}>
+              New Puzzle
+            </div>
+
             <div id="alertBar">
               Mistake{" "}
               <div id={invalidBoard ? "alertLightActive" : "alertLight"} />
@@ -283,10 +325,9 @@ function App() {
             <div id="alertBar">
               Winner <div id={winner ? "alertLightActive" : "alertLight"} />
             </div>
-            {winner ? "You solved it!" : ""}
           </div>
-          <ClueHolder puzzleHolder={currentPuzzle()} horizontal />
-          <ClueHolder puzzleHolder={currentPuzzle()} />
+          <ClueHolder puzzleHolder={curPuzzle} horizontal />
+          <ClueHolder puzzleHolder={curPuzzle} />
           <div className="gameTray underEffect">
             <GameBoard
               currentGameBoard={gameBoard}

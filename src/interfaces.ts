@@ -9,6 +9,7 @@ export interface Clue {
 }
 
 export interface Puzzle {
+  puzzleId: number;
   solution: number[][];
   verticalClues: Clue[][];
   horizontalClues: Clue[][];
