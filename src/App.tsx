@@ -313,7 +313,7 @@ function App() {
       <div className="gameArea">
         <div className="fullGameHolder">
           <div className="alertsHolder">
-            <div id="alertBar" onClick={changePuzzle}>
+            <div id="alertBar" onClick={() => setCurPuzzle(currentPuzzle())}>
               New Puzzle
             </div>
 
